@@ -1,10 +1,17 @@
-import os
-os.system("pip install google-generativeai")
+import subprocess
+import sys
+
+# Força a instalação antes de importar qualquer coisa
+try:
+    import google.generativeai
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "google-generativeai"])
 
 import streamlit as st
 import google.generativeai as genai
 
 # Configuração da chave e modelo
+# Certifique-se de que GOOGLE_API_KEY está configurada no Streamlit Cloud (Settings > Secrets)
 genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 model = genai.GenerativeModel('gemini-pro')
 
@@ -29,7 +36,7 @@ if st.button("Consultar o Oráculo"):
                 # Exibição da resposta
                 st.info(f"**O Oráculo responde:**\n\n{resposta.text}")
             except Exception as e:
-                st.error("O Oráculo está em silêncio agora. Tente novamente.")
+                st.error("O Oráculo está em silêncio agora. Verifique sua chave API nas configurações.")
     else:
         st.warning("Preencha seu nome e a pergunta para ouvir o Oráculo.")
 
