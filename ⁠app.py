@@ -1,18 +1,19 @@
 import streamlit as st
+import importlib.util
 import subprocess
 import sys
 
-# Força a instalação da biblioteca se ela não existir
-try:
-    import google.generativeai as genai
-except ImportError:
+# Garante que o google-generativeai está instalado
+if importlib.util.find_spec("google.generativeai") is None:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "google-generativeai"])
-    import google.generativeai as genai
 
-# Agora o código normal
+import google.generativeai as genai
+
+# Configuração da chave
 genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 model = genai.GenerativeModel('gemini-pro')
 
+# O resto do seu código
 st.set_page_config(page_title="Oráculo do Véu", page_icon="🔮")
 st.title("🔮 O Oráculo do Véu")
 
