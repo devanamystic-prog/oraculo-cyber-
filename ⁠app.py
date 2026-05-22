@@ -1,40 +1,35 @@
 import streamlit as st
+import google.generativeai as genai
+
+# Conectando com a chave que você salvou no Secrets
+genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
+model = genai.GenerativeModel('gemini-pro')
 
 # Configuração da página
-st.set_page_config(page_title="Oráculo do Véu", page_icon="🔮", layout="centered")
+st.set_page_config(page_title="Oráculo do Véu", page_icon="🔮")
 
-# Título e Introdução
 st.title("🔮 O Oráculo do Véu")
 st.markdown("---")
 
+# Interface do usuário
 nome = st.text_input("Bem-vinda, buscadora. Como devo te chamar?")
+pergunta = st.text_area("Qual a sua dúvida para o Oráculo?")
 
-if nome:
-    st.success(f"É uma honra te receber, {nome}.")
-    
-    categoria = st.selectbox(
-        "Qual dimensão você deseja consultar hoje?",
-        ["Selecione uma opção...", "Caminhos do Amor", "Jornada Profissional", "Revelações Espirituais"]
-    )
+# Lógica do Oráculo
+if st.button("Consultar o Oráculo"):
+    if nome and pergunta:
+        with st.spinner('O véu se abre...'):
+            try:
+                # O comando para a IA
+                prompt = f"Aja como um Oráculo místico e sábio. Responda à pergunta de {nome}: '{pergunta}'. Use um tom profundo, poético e misterioso."
+                resposta = model.generate_content(prompt)
+                
+                # Exibição da resposta
+                st.info(f"**O Oráculo responde:**\n\n{resposta.text}")
+            except Exception as e:
+                st.error("O Oráculo está em silêncio momentâneo. Tente novamente.")
+    else:
+        st.warning("Preencha seu nome e a pergunta para ouvir o Oráculo.")
 
-    if categoria != "Selecione uma opção...":
-        st.write("---")
-        st.subheader(f"✨ Conexão: {categoria}")
-        st.write("Sinta a energia da sua pergunta e escolha um caminho:")
-        
-        # Criando colunas para os cristais
-        col1, col2, col3 = st.columns(3)
-        
-        # Usando botões simples que não quebram o fluxo
-        if col1.button("🔮 Ametista"):
-            st.info("Ametista: O equilíbrio está no silêncio. A resposta que busca reside na sua intuição mais profunda.")
-            
-        if col2.button("💎 Safira"):
-            st.info("Safira: A verdade se revela através da clareza mental. Observe os sinais ao seu redor nos próximos dias.")
-            
-        if col3.button("🔶 Âmbar"):
-            st.info("Âmbar: A energia do passado se integra ao seu presente. Deixe ir o que não serve mais para abrir espaço ao novo.")
-
-# Rodapé
 st.markdown("---")
-st.caption("Oráculo desenvolvido por Devana Mystic | Conecte-se com o invisível.")
+st.caption("Oráculo de Devana Mystic | Conecte-se com o invisível.")
