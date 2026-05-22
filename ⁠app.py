@@ -1,18 +1,15 @@
 import os
 os.system("pip install google-generativeai")
-import streamlit as st
-import google.generativeai as genai
 
 import streamlit as st
 import google.generativeai as genai
 
-# Conectando com a chave que você salvou no Secrets
+# Configuração da chave e modelo
 genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 model = genai.GenerativeModel('gemini-pro')
 
 # Configuração da página
-st.set_page_config(page_title="Oráculo do Véu", page_icon="🔮")
-
+st.set_page_config(page_title="Oráculo do Véu")
 st.title("🔮 O Oráculo do Véu")
 st.markdown("---")
 
@@ -26,15 +23,15 @@ if st.button("Consultar o Oráculo"):
         with st.spinner('O véu se abre...'):
             try:
                 # O comando para a IA
-                prompt = f"Aja como um Oráculo místico e sábio. Responda à pergunta de {nome}: '{pergunta}'. Use um tom profundo, poético e misterioso."
+                prompt = f"Aja como um Oráculo místico. Responda para {nome} sobre: {pergunta}"
                 resposta = model.generate_content(prompt)
                 
                 # Exibição da resposta
                 st.info(f"**O Oráculo responde:**\n\n{resposta.text}")
             except Exception as e:
-                st.error("O Oráculo está em silêncio momentâneo. Tente novamente.")
+                st.error("O Oráculo está em silêncio agora. Tente novamente.")
     else:
         st.warning("Preencha seu nome e a pergunta para ouvir o Oráculo.")
 
 st.markdown("---")
-st.caption("Oráculo de Devana Mystic | Conecte-se com o invisível.")
+st.caption("Oráculo de Devana Mystic | Conectado")
