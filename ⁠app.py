@@ -1,8 +1,15 @@
 import streamlit as st
+import os
+
+# Força a instalação da biblioteca antes de importar
+if not os.path.exists("installed.flag"):
+    os.system("pip install google-generativeai")
+    with open("installed.flag", "w") as f:
+        f.write("done")
+
 import google.generativeai as genai
 
 # Configuração da API
-# Certifique-se de que a chave está nos "Secrets" do app
 genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 model = genai.GenerativeModel('gemini-pro')
 
