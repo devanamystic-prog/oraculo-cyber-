@@ -10,7 +10,10 @@ try:
 
     genai.configure(api_key=api_key)
 
-    model = genai.GenerativeModel("gemini-pro")
+    # MODELO CORRETO
+    model = genai.GenerativeModel(
+        "models/gemini-1.5-flash-latest"
+    )
 
 except Exception as e:
 
@@ -37,8 +40,10 @@ st.title("🔮 O Oráculo do Véu")
 
 st.markdown(
     """
-    Bem-vindo(a) ao Véu ✨  
-    Escolha um cristal e consulte o Oráculo.
+    Bem-vindo(a) ao Véu ✨
+
+    Escolha um cristal
+    e consulte o Oráculo.
     """
 )
 
