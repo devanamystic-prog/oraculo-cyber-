@@ -10,11 +10,12 @@ try:
 
     genai.configure(api_key=api_key)
 
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    # MODELO CORRIGIDO
+    model = genai.GenerativeModel("gemini-pro")
 
 except Exception as e:
 
-    st.error("⚠️ Erro ao carregar a chave API:")
+    st.error("⚠️ Erro ao carregar a API:")
     st.code(str(e))
 
     st.stop()
