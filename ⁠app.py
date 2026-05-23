@@ -5,7 +5,7 @@ import google.generativeai as genai
 try:
     api_key = st.secrets["GOOGLE_API_KEY"]
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("models/gemini-1.5-flash-latest")
+model = genai.GenerativeModel("gemini-1.5-flash")
 except Exception as e:
     st.error("⚠️ Erro ao carregar a API")
     st.code(str(e))
