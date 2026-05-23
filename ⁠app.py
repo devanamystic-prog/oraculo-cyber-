@@ -2,11 +2,14 @@ import streamlit as st
 import google.generativeai as genai
 
 # Configuração da chave de API
+# Configuração da chave de API
 try:
-    genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
+    api_key = st.secrets["GOOGLE_API_KEY"]
+    genai.configure(api_key=api_key)
     model = genai.GenerativeModel('gemini-1.5-flash')
 except Exception as e:
-    st.error("Erro na configuração da API. Verifique os Secrets.")
+    st.error(f"Erro ao ler a chave API: {e}")
+    st.stop()
 
 st.title("🔮 O Oráculo do Véu")
 
