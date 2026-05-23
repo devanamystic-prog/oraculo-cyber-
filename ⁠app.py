@@ -54,9 +54,10 @@ if st.button("Consultar o Oráculo 🔮"):
                 st.success("✨ O Oráculo respondeu:")
                 st.write(resposta.text)
             except Exception as e:
-                st.error("O Oráculo entrou em transe profundo e precisa descansar um pouco. Tente novamente mais tarde.")
+                st.error(str(e))
     else:
         st.warning("Por favor, preencha seu nome e sua pergunta.")
+
 
 
 
