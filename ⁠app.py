@@ -11,8 +11,9 @@ try:
     genai.configure(api_key=api_key)
 
     # MODELO CORRETO
-    model = genai.GenerativeModel(
+     model = genai.GenerativeModel(
     "gemini-1.5-flash"
+)
 )
 
     )
