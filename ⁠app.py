@@ -12,7 +12,7 @@ try:
 
     # MODELO CORRETO
     model = genai.GenerativeModel(
-    "models/gemini-1.5-flash"
+    "gemini-1.5-flash"
 
     )
 
