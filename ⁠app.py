@@ -12,7 +12,8 @@ try:
 
     # MODELO CORRETO
     model = genai.GenerativeModel(
-        "models/gemini-1.5-flash-latest"
+    "models/gemini-1.5-flash"
+
     )
 
 except Exception as e:
