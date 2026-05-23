@@ -1,50 +1,53 @@
 import streamlit as st
 import google.generativeai as genai
 
-# =========================
+# ====================================
 # CONFIGURAÇÃO DA API
-# =========================
+# ====================================
 
 try:
     api_key = st.secrets["GOOGLE_API_KEY"]
 
     genai.configure(api_key=api_key)
 
-    # MODELO CORRIGIDO
     model = genai.GenerativeModel("gemini-pro")
 
 except Exception as e:
 
-    st.error("⚠️ Erro ao carregar a API:")
+    st.error("⚠️ Erro ao carregar a API")
     st.code(str(e))
 
     st.stop()
 
-# =========================
+# ====================================
 # CONFIGURAÇÃO DA PÁGINA
-# =========================
+# ====================================
 
 st.set_page_config(
     page_title="🔮 Oráculo do Véu",
-    page_icon="🔮"
+    page_icon="🔮",
+    layout="centered"
 )
 
-# =========================
+# ====================================
 # TÍTULO
-# =========================
+# ====================================
 
 st.title("🔮 O Oráculo do Véu")
 
 st.markdown(
-    "Escolha um cristal e consulte o Oráculo ✨"
+    """
+    Bem-vindo(a) ao Véu ✨  
+    Escolha um cristal e consulte o Oráculo.
+    """
 )
 
-# =========================
+# ====================================
 # ESTILO
-# =========================
+# ====================================
 
 estilo = st.selectbox(
-    "Como o Oráculo deve te responder?",
+    "Como o Oráculo deve responder?",
     [
         "Sábio",
         "Enigmático",
@@ -52,12 +55,12 @@ estilo = st.selectbox(
     ]
 )
 
-# =========================
+# ====================================
 # CRISTAIS
-# =========================
+# ====================================
 
 cristal = st.selectbox(
-    "Escolha um cristal para guiar sua consulta:",
+    "Escolha um cristal:",
     [
         "💜 Ametista",
         "🌸 Quartzo Rosa",
@@ -67,9 +70,9 @@ cristal = st.selectbox(
     ]
 )
 
-# =========================
+# ====================================
 # INPUTS
-# =========================
+# ====================================
 
 nome = st.text_input(
     "Como devo te chamar?"
@@ -79,26 +82,35 @@ pergunta = st.text_area(
     "Qual a sua dúvida para o Oráculo?"
 )
 
-# =========================
+# ====================================
 # BOTÃO
-# =========================
+# ====================================
 
-if st.button("Consultar o Oráculo"):
+if st.button("Consultar o Oráculo 🔮"):
 
     if nome and pergunta:
 
-        with st.spinner("🔮 O Oráculo está consultando as estrelas..."):
+        with st.spinner("🌙 O Véu está se abrindo..."):
 
             try:
 
                 prompt = f"""
-                Você é um oráculo {estilo}.
+                Você é um Oráculo espiritual,
+                simbólico e intuitivo.
+
+                Seu tom deve ser:
+                {estilo}
 
                 O cristal escolhido foi:
                 {cristal}
 
-                Responda de forma profunda,
-                mística e intuitiva.
+                IMPORTANTE:
+                - Nunca dê respostas perigosas
+                - Nunca dê diagnósticos médicos
+                - Nunca incentive violência
+                - Responda de forma acolhedora
+                - Use linguagem poética e mística
+                - Faça a pessoa refletir
 
                 Nome:
                 {nome}
@@ -116,7 +128,6 @@ if st.button("Consultar o Oráculo"):
             except Exception as e:
 
                 st.error("⚠️ Erro detectado:")
-
                 st.code(str(e))
 
     else:
