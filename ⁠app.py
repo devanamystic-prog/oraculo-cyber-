@@ -1,33 +1,125 @@
 import streamlit as st
 import google.generativeai as genai
 
-# Configuração da chave de API
-# Configuração da chave de API
+# =========================
+# CONFIGURAÇÃO DA API
+# =========================
+
 try:
     api_key = st.secrets["GOOGLE_API_KEY"]
+
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-1.5-flash')
+
+    model = genai.GenerativeModel("gemini-1.5-flash")
+
 except Exception as e:
-    st.error(f"Erro ao ler a chave API: {e}")
+
+    st.error("⚠️ Erro ao carregar a chave API:")
+    st.code(str(e))
+
     st.stop()
+
+# =========================
+# CONFIGURAÇÃO DA PÁGINA
+# =========================
+
+st.set_page_config(
+    page_title="🔮 Oráculo do Véu",
+    page_icon="🔮"
+)
+
+# =========================
+# TÍTULO
+# =========================
 
 st.title("🔮 O Oráculo do Véu")
 
-# Criando opções para o usuário
-estilo = st.selectbox("Como o Oráculo deve te responder?", ["Sábio", "Enigmático", "Direto e Prático"])
+st.markdown(
+    "Escolha um cristal e consulte o Oráculo ✨"
+)
 
-nome = st.text_input("Como devo te chamar?")
-pergunta = st.text_area("Qual a sua dúvida para o Oráculo?")
+# =========================
+# ESTILO
+# =========================
+
+estilo = st.selectbox(
+    "Como o Oráculo deve te responder?",
+    [
+        "Sábio",
+        "Enigmático",
+        "Direto e Prático"
+    ]
+)
+
+# =========================
+# CRISTAIS
+# =========================
+
+cristal = st.selectbox(
+    "Escolha um cristal para guiar sua consulta:",
+    [
+        "💜 Ametista",
+        "🌸 Quartzo Rosa",
+        "🖤 Obsidiana",
+        "✨ Citrino",
+        "🌌 Labradorita"
+    ]
+)
+
+# =========================
+# INPUTS
+# =========================
+
+nome = st.text_input(
+    "Como devo te chamar?"
+)
+
+pergunta = st.text_area(
+    "Qual a sua dúvida para o Oráculo?"
+)
+
+# =========================
+# BOTÃO
+# =========================
 
 if st.button("Consultar o Oráculo"):
+
     if nome and pergunta:
-        with st.spinner('O Oráculo está consultando as estrelas...'):
+
+        with st.spinner("🔮 O Oráculo está consultando as estrelas..."):
+
             try:
-                # Prompt místico
-                prompt = f"Você é um oráculo {estilo}. Responda para {nome} sobre: {pergunta}"
+
+                prompt = f"""
+                Você é um oráculo {estilo}.
+
+                O cristal escolhido foi:
+                {cristal}
+
+                Responda de forma profunda,
+                mística e intuitiva.
+
+                Nome:
+                {nome}
+
+                Pergunta:
+                {pergunta}
+                """
+
                 resposta = model.generate_content(prompt)
-                st.info(f"**Resposta do Oráculo:**\n\n{resposta.text}")
+
+                st.success("✨ O Oráculo respondeu:")
+
+                st.write(resposta.text)
+
             except Exception as e:
-                st.error("O Oráculo está em silêncio no momento. Verifique sua chave de API.")
+
+                st.error("⚠️ Erro detectado:")
+
+                st.code(str(e))
+
     else:
-        st.warning("Por favor, preencha seu nome e a pergunta.")
+
+        st.warning(
+            "Por favor, preencha seu nome e sua pergunta."
+        )
