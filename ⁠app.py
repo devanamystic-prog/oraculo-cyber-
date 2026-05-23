@@ -4,7 +4,7 @@ import google.generativeai as genai
 try:
     api_key = st.secrets["GOOGLE_API_KEY"]
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-2.0-flash")
+    model = genai.GenerativeModel("gemini-1.5-flash")
 except Exception as e:
     st.error("Erro ao carregar a API")
     st.code(str(e))
@@ -54,10 +54,10 @@ if st.button("Consultar o Oráculo 🔮"):
                 st.success("✨ O Oráculo respondeu:")
                 st.write(resposta.text)
             except Exception as e:
-                st.error("Erro detectado:")
-                st.code(str(e))
+                st.error("O Oráculo entrou em transe profundo e precisa descansar um pouco. Tente novamente mais tarde.")
     else:
         st.warning("Por favor, preencha seu nome e sua pergunta.")
+
 
 
 
