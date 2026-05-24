@@ -1,45 +1,60 @@
 import streamlit as st
 import google.generativeai as genai
+from PIL import Image
 
 try:
     api_key = st.secrets["GOOGLE_API_KEY"]
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel("gemini-1.5-flash")
-except Exception as e:
-    st.error("Erro ao carregar a API")
-    st.code(str(e))
+except Exception:
+    st.error("🌙 O Véu não conseguiu despertar...")
     st.stop()
 
 st.set_page_config(
-    page_title="Oraculo do Veu",
+    page_title="Oráculo do Véu",
     page_icon="🔮",
     layout="centered"
 )
 
 st.title("🔮 O Oráculo do Véu")
-st.markdown("Bem-vindo(a) ao Véu ✨\n\nEscolha um cristal e consulte o Oráculo.")
+st.markdown("""
+✨ Bem-vindo(a) ao Véu ✨
+
+Escolha um cristal, revele sua dúvida e permita que o Oráculo interprete os sinais do seu caminho.
+""")
 
 estilo = st.selectbox(
-    "Como o Oráculo deve responder?",
+    "🌙 Como o Oráculo deve responder?",
     ["Sábio", "Enigmático", "Direto e Prático"]
 )
 
 cristal = st.selectbox(
-    "Escolha um cristal:",
+    "💎 Escolha um cristal:",
     ["💜 Ametista", "🌸 Quartzo Rosa", "🖤 Obsidiana", "✨ Citrino", "🌌 Labradorita"]
 )
 
-nome = st.text_input("Como devo te chamar?")
-pergunta = st.text_area("Qual a sua dúvida para o Oráculo?")
+categoria = st.selectbox(
+    "🌙 Que área deseja consultar?",
+    ["💜 Amor", "🌙 Espiritualidade", "💰 Caminhos Financeiros", "🕯️ Intuição", "🌌 Destino", "🔮 Conselho do Dia"]
+)
 
-if st.button("Consultar o Oráculo 🔮"):
+nome = st.text_input("✨ Como devo te chamar?")
+pergunta = st.text_area("🌙 O que deseja revelar ao Véu?")
+
+imagem = st.file_uploader(
+    "🖼️ Envie uma imagem para o Oráculo interpretar (opcional)",
+    type=["png", "jpg", "jpeg"]
+)
+
+if st.button("🔮 Consultar o Oráculo"):
     if nome and pergunta:
         with st.spinner("🌙 O Véu está se abrindo..."):
             try:
                 prompt = (
                     "Você é um Oráculo espiritual, simbólico e intuitivo.\n\n"
                     f"Seu tom deve ser: {estilo}\n"
-                    f"O cristal escolhido foi: {cristal}\n\n"
+                    f"O cristal escolhido foi: {cristal}\n"
+                    f"A área escolhida foi: {categoria}\n\n"
                     "IMPORTANTE:\n"
                     "- Nunca dê respostas perigosas\n"
                     "- Nunca dê diagnósticos médicos\n"
@@ -50,13 +65,26 @@ if st.button("Consultar o Oráculo 🔮"):
                     f"Nome: {nome}\n"
                     f"Pergunta: {pergunta}"
                 )
-                resposta = model.generate_content(prompt)
+
+                if imagem:
+                    img = Image.open(imagem)
+                    st.image(img, caption="Imagem enviada ao Oráculo", use_column_width=True)
+                    resposta = model.generate_content([prompt, img])
+                else:
+                    resposta = model.generate_content(prompt)
+
                 st.success("✨ O Oráculo respondeu:")
                 st.write(resposta.text)
-            except Exception as e:
-                st.error(str(e))
+
+            except Exception:
+                st.warning(
+                    "🌙 O Véu entrou em repouso...\n\n"
+                    "As energias estão se reorganizando.\n"
+                    "Tente novamente mais tarde ✨"
+                )
     else:
-        st.warning("Por favor, preencha seu nome e sua pergunta.")
+        st.warning("🌙 O Véu precisa do seu nome e da sua pergunta para revelar os sinais ✨")
+
 
 
 
