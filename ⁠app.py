@@ -1,6 +1,5 @@
 import streamlit as st
 import google.generativeai as genai
-from PIL import Image
 
 try:
     api_key = st.secrets["GOOGLE_API_KEY"]
@@ -16,6 +15,7 @@ st.set_page_config(
     layout="centered"
 )
 
+st.image("logo.PNG", width=300)
 st.title("🔮 O Oráculo do Véu")
 st.markdown("""
 ✨ Bem-vindo(a) ao Véu ✨
@@ -38,16 +38,51 @@ categoria = st.selectbox(
     ["💜 Amor", "🌙 Espiritualidade", "💰 Caminhos Financeiros", "🕯️ Intuição", "🌌 Destino", "🔮 Conselho do Dia"]
 )
 
-nome = st.text_input("✨ Como devo te chamar?")
-pergunta = st.text_area("🌙 O que deseja revelar ao Véu?")
+perguntas = {
+    "💜 Amor": [
+        "💜 Como está o seu coração agora?",
+        "💜 O que você busca em uma conexão?",
+        "💜 Há algo que te impede de amar?"
+    ],
+    "🌙 Espiritualidade": [
+        "🌙 Como está sua conexão interior?",
+        "🌙 O que você busca espiritualmente?",
+        "🌙 Há algo bloqueando seu crescimento espiritual?"
+    ],
+    "💰 Caminhos Financeiros": [
+        "💰 Como está sua relação com o dinheiro?",
+        "💰 O que você deseja conquistar financeiramente?",
+        "💰 Há algo que te impede de prosperar?"
+    ],
+    "🕯️ Intuição": [
+        "🕯️ Você tem ouvido sua intuição?",
+        "🕯️ Há um sinal que você está ignorando?",
+        "🕯️ O que seu interior está tentando te dizer?"
+    ],
+    "🌌 Destino": [
+        "🌌 Você sente que está no caminho certo?",
+        "🌌 O que você deseja para o seu futuro?",
+        "🌌 Há algo que precisa mudar na sua jornada?"
+    ],
+    "🔮 Conselho do Dia": [
+        "🔮 Como você está se sentindo hoje?",
+        "🔮 Qual é o seu maior desafio agora?",
+        "🔮 O que você precisa ouvir hoje?"
+    ]
+}
 
-imagem = st.file_uploader(
-    "🖼️ Envie uma imagem para o Oráculo interpretar (opcional)",
-    type=["png", "jpg", "jpeg"]
-)
+nome = st.text_input("✨ Como devo te chamar?")
+
+st.markdown("---")
+st.markdown("🌙 **Responda às perguntas do Véu:**")
+
+p = perguntas[categoria]
+r1 = st.text_area(p[0])
+r2 = st.text_area(p[1])
+r3 = st.text_area(p[2])
 
 if st.button("🔮 Consultar o Oráculo"):
-    if nome and pergunta:
+    if nome and r1 and r2 and r3:
         with st.spinner("🌙 O Véu está se abrindo..."):
             try:
                 prompt = (
@@ -63,19 +98,13 @@ if st.button("🔮 Consultar o Oráculo"):
                     "- Use linguagem poética e mística\n"
                     "- Faça a pessoa refletir\n\n"
                     f"Nome: {nome}\n"
-                    f"Pergunta: {pergunta}"
+                    f"Pergunta 1: {p[0]} — {r1}\n"
+                    f"Pergunta 2: {p[1]} — {r2}\n"
+                    f"Pergunta 3: {p[2]} — {r3}"
                 )
-
-                if imagem:
-                    img = Image.open(imagem)
-                    st.image(img, caption="Imagem enviada ao Oráculo", use_column_width=True)
-                    resposta = model.generate_content([prompt, img])
-                else:
-                    resposta = model.generate_content(prompt)
-
+                resposta = model.generate_content(prompt)
                 st.success("✨ O Oráculo respondeu:")
                 st.write(resposta.text)
-
             except Exception:
                 st.warning(
                     "🌙 O Véu entrou em repouso...\n\n"
@@ -83,7 +112,8 @@ if st.button("🔮 Consultar o Oráculo"):
                     "Tente novamente mais tarde ✨"
                 )
     else:
-        st.warning("🌙 O Véu precisa do seu nome e da sua pergunta para revelar os sinais ✨")
+        st.warning("🌙 O Véu precisa do seu nome e das respostas para revelar os sinais ✨")
+
 
 
 
