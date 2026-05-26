@@ -64,9 +64,9 @@ st.markdown("---")
 st.markdown("🌙 **Responda às perguntas do Véu:**")
 
 p = perguntas[categoria]
-r1 = st.text_area(p[0], height=80)
-r2 = st.text_area(p[1], height=80)
-r3 = st.text_area(p[2], height=80)
+r1 = st.text_area(p[0], height=100, max_chars=450)
+r2 = st.text_area(p[1], height=100, max_chars=450)
+r3 = st.text_area(p[2], height=100, max_chars=450)
 
 if st.button("🔮 Consultar o Oráculo", type="primary"):
     if nome and r1 and r2 and r3:
@@ -99,7 +99,7 @@ if st.button("🔮 Consultar o Oráculo", type="primary"):
 if st.button("🔄 Limpar tudo"):
     st.rerun()
 
-# ==================== AVISO FINAL (exatamente como você pediu) ====================
+# ==================== AVISO FINAL (exatamente como você escreveu) ====================
 st.markdown("---")
 st.markdown("""
 🌙 **O Oráculo do Véu não revela destinos absolutos.**  
