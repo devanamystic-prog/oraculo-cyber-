@@ -88,6 +88,11 @@ if st.button("🔮 Consultar o Oráculo", type="primary"):
                 st.success("✨ O Oráculo respondeu:")
                 st.markdown(resposta.text)
 
+                # AVISO SÓ EM CASOS EXTREMOS
+                if any(frase in (r1 + r2 + r3).lower() for frase in ["quero morrer", "quero me matar", "não quero mais viver", "vou me matar"]):
+                    st.markdown("---")
+                    st.markdown("💙 Quando a alma pede ajuda, é um sinal sagrado. Você não está só. Permitir que alguém humano te acompanhe nessa travessia pode trazer alívio e força.")
+
             except Exception as e:
                 if "quota" in str(e).lower() or "limit" in str(e).lower() or "429" in str(e):
                     st.error("🎟️ Ops! Hoje o limite de consultas foi atingido.\nTente novamente amanhã!")
@@ -99,7 +104,7 @@ if st.button("🔮 Consultar o Oráculo", type="primary"):
 if st.button("🔄 Limpar tudo"):
     st.rerun()
 
-# ==================== AVISO FINAL (exatamente como você escreveu) ====================
+# ==================== RODAPÉ FINAL ====================
 st.markdown("---")
 st.markdown("""
 🌙 **O Oráculo do Véu não revela destinos absolutos.**  
