@@ -74,4 +74,34 @@ if st.button("🔮 Consultar o Oráculo", type="primary"):
             try:
                 prompt = (
                     f"Você é o Oráculo do Véu.\n"
-                    f"Seu tom deve ser: {estilo}\
+                    f"Seu tom deve ser: {estilo}\n"
+                    f"O cristal escolhido foi: {cristal}\n"
+                    f"A área escolhida foi: {categoria}\n\n"
+                    f"Nome da pessoa: {nome}\n"
+                    f"Pergunta 1: {p[0]} — {r1}\n"
+                    f"Pergunta 2: {p[1]} — {r2}\n"
+                    f"Pergunta 3: {p[2]} — {r3}\n\n"
+                    "Responda de forma poética, acolhedora e mística."
+                )
+
+                resposta = model.generate_content(prompt)
+                st.success("✨ O Oráculo respondeu:")
+                st.markdown(resposta.text)
+
+            except Exception as e:
+                if "quota" in str(e).lower() or "limit" in str(e).lower() or "429" in str(e):
+                    st.error("🎟️ Ops! Hoje o limite de consultas foi atingido.\nTente novamente amanhã!")
+                else:
+                    st.warning("🌙 O Véu entrou em repouso... Tente novamente mais tarde ✨")
+    else:
+        st.warning("🌙 O Véu precisa do seu nome e das respostas para revelar os sinais ✨")
+
+if st.button("🔄 Limpar tudo"):
+    st.rerun()
+
+# ==================== AVISO FINAL (exatamente como você pediu) ====================
+st.markdown("---")
+st.markdown("""
+🌙 **O Oráculo do Véu não revela destinos absolutos.**  
+Ele reflete emoções, ciclos e movimentos internos por meio de interpretações simbólicas e atmosferas intuitivas.
+""")
